@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="Kwetter versie 5001:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/Kwetter_versie_5001_war_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="Kwetter versie 5001/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="Kwetter versie 5001" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>
