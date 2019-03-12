@@ -2,25 +2,19 @@ package DAO;
 
 import Models.User;
 
-import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
+import javax.persistence.*;
 import java.util.List;
 
 
 @Stateless
 public class DAOUserMysql implements IDAOUser {
 
-    @PersistenceContext(unitName = "kwetterPU")
+    @PersistenceContext(unitName = "kwetter")
     private EntityManager em;
+    public DAOUserMysql() {
+        em=Persistence.createEntityManagerFactory("Kwetter").createEntityManager();
 
-    @Inject
-    public DAOUserMysql(EntityManager em) {
-        this.em = em;
     }
     @Override
     public User getUser(String username) {
@@ -48,9 +42,9 @@ public class DAOUserMysql implements IDAOUser {
 
     @Override
     public boolean removeUser(User user) {
-        User u = em.find(User.class, 1);
+
         em.getTransaction().begin();
-        em.remove(u);
+        em.remove(user);
         em.getTransaction().commit();
         return true;
     }
@@ -62,5 +56,14 @@ public class DAOUserMysql implements IDAOUser {
         u.setUserName(user.getUserName());
         em.getTransaction().commit();
         return true;
+    }
+
+    @Override
+    public void followerUser(User followee, User follower) {
+
+    }
+
+    public EntityManager getEM(){
+        return this.em;
     }
 }

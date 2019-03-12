@@ -8,32 +8,34 @@ import java.sql.SQLException;
 
 public  class DatabaseCleaner {
     private static final Class<?>[] ENTITY_TYPES = {
+            Kweet.class,
             User.class,
             Role.class,
-            Kweet.class,
             Topic.class,
             Permission.class
     };
-    private static EntityManagerFactory em = Persistence.createEntityManagerFactory("Kwetter");
-    public  DatabaseCleaner() {
 
+    private final EntityManager em;
+
+    public DatabaseCleaner(EntityManager entityManager) {
+        em = entityManager;
     }
 
-    public static void clean() throws SQLException {
-        em.createEntityManager().getTransaction().begin();
+    public void clean() throws SQLException {
+        em.getTransaction().begin();
 
         for (Class<?> entityType : ENTITY_TYPES) {
             deleteEntities(entityType);
         }
-        em.createEntityManager().getTransaction().commit();
+        em.getTransaction().commit();
         em.close();
     }
 
-    private static void deleteEntities(Class<?> entityType) {
-        em.createEntityManager().createQuery("delete from " + getEntityName(entityType)).executeUpdate();
+    private void deleteEntities(Class<?> entityType) {
+        em.createQuery("delete from " + getEntityName(entityType)).executeUpdate();
     }
 
-    protected static String getEntityName(Class<?> clazz) {
+    protected String getEntityName(Class<?> clazz) {
         EntityType et = em.getMetamodel().entity(clazz);
         return et.getName();
     }

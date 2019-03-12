@@ -6,10 +6,7 @@ import Models.User;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
+import javax.persistence.*;
 import java.util.List;
 
 
@@ -17,11 +14,11 @@ import java.util.List;
 public class DaoKweetMysql implements IDAOKweet
 {
 
-    @PersistenceContext(unitName = "kwetterPU")
+    @PersistenceContext(unitName = "Kwetter")
     private EntityManager em;
     @Inject
-    public DaoKweetMysql(EntityManager em){
-        this.em = em;
+    public DaoKweetMysql(){
+        em= Persistence.createEntityManagerFactory("Kwetter").createEntityManager();
     }
 
 
@@ -66,5 +63,9 @@ public class DaoKweetMysql implements IDAOKweet
     @Override
     public void editKweet(Kweet kweet) {
         em.merge(kweet);
+    }
+
+    public EntityManager getEM(){
+        return this.em;
     }
 }
