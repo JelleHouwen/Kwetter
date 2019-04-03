@@ -5,10 +5,11 @@ import Models.User;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.enterprise.inject.Alternative;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.persistence.*;
 import java.util.List;
-
 
 @Stateless
 public class DaoKweetMysql implements IDAOKweet
@@ -16,18 +17,11 @@ public class DaoKweetMysql implements IDAOKweet
 
     @PersistenceContext(unitName = "Kwetter")
     private EntityManager em;
-    @Inject
-    public DaoKweetMysql(){
-        em= Persistence.createEntityManagerFactory("Kwetter").createEntityManager();
-    }
-
 
     @Override
     public boolean addKweet(Kweet kweet) {
-        em.getTransaction().begin();
         em.persist(kweet);
-        em.getTransaction().commit();
-           return true;
+        return true;
 
     }
 
@@ -43,8 +37,14 @@ public class DaoKweetMysql implements IDAOKweet
     }
 
     @Override
-    public List<Kweet> getAllKweetsFromUser(User user) {
-        return (List<Kweet>) em.createNamedQuery("Kweet.findByUser", Kweet.class).getResultList();
+    public List<Kweet> getAllKweetsFromUser(String username) {
+        Query q = em.createNamedQuery("Kweet.findByUser");
+        q.setParameter("username", username);
+        try {
+            return (List<Kweet>) q.getSingleResult();
+        } catch (NoResultException ex) {
+            return null;
+        }
     }
 
     @Override
@@ -54,10 +54,7 @@ public class DaoKweetMysql implements IDAOKweet
 
     @Override
     public void deleteKweet(Kweet kweet) {
-        Kweet k = em.find(Kweet.class, 1);
-        em.getTransaction().begin();
-        em.remove(k);
-        em.getTransaction().commit();
+        em.remove(kweet);
     }
 
     @Override
@@ -67,5 +64,8 @@ public class DaoKweetMysql implements IDAOKweet
 
     public EntityManager getEM(){
         return this.em;
+    }
+    public void setEM(EntityManager EM){
+        this.em= EM;
     }
 }

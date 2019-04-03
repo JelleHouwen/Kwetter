@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="Kwetter versie 5001:war">
+    <output-path>$PROJECT_DIR$/out/artifacts/Kwetter_versie_5001_war</output-path>
+    <root id="archive" name="Kwetter versie 5001_war.war">
+      <element id="artifact" artifact-name="Kwetter versie 5001:war exploded" />
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/out/artifacts/Kwetter_versie_5001_war_exploded/META-INF/MANIFEST.MF" />
+      </element>
+    </root>
+  </artifact>
+</component>

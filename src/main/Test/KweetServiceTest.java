@@ -18,13 +18,9 @@ public class KweetServiceTest {
     KweetService kweetService;
     @Mock
     private DAOKweetImpl kweetDAO;
-    @Mock
-    private DAOUserImpl userDAO;
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        kweetService.setKweetDAO(kweetDAO);
-        kweetService.setUserDAO(userDAO);
     }
     @Test
     public void shouldAddKweetService() throws Exception{

@@ -3,6 +3,8 @@ package DAO;
 import Models.User;
 
 import javax.ejb.Stateless;
+import javax.enterprise.inject.Alternative;
+import javax.inject.Inject;
 import javax.persistence.*;
 import java.util.List;
 
@@ -10,12 +12,9 @@ import java.util.List;
 @Stateless
 public class DAOUserMysql implements IDAOUser {
 
-    @PersistenceContext(unitName = "kwetter")
+    @PersistenceContext(unitName = "Kwetter")
     private EntityManager em;
-    public DAOUserMysql() {
-        em=Persistence.createEntityManagerFactory("Kwetter").createEntityManager();
 
-    }
     @Override
     public User getUser(String username) {
         Query q = em.createNamedQuery("Account.findByUsername");
@@ -33,37 +32,33 @@ public class DAOUserMysql implements IDAOUser {
     }
 
     @Override
-    public boolean addUser(User user) {
-        em.getTransaction().begin();
-        em.persist(user);
-        em.getTransaction().commit();
-        return true;
+    public void addUser(User user) {
+        if(!this.getAllUsers().contains(user)) {
+            em.persist(user);
+        }
     }
 
     @Override
-    public boolean removeUser(User user) {
-
-        em.getTransaction().begin();
-        em.remove(user);
-        em.getTransaction().commit();
-        return true;
+    public void removeUser(User user) {
+        if(this.getAllUsers().contains(user)) {
+            em.remove(user);
+        }
     }
 
     @Override
-    public boolean editUser(User user) {
-        User u = em.find(User.class, 1);
-        em.getTransaction().begin();
-        u.setUserName(user.getUserName());
-        em.getTransaction().commit();
-        return true;
+    public void editUser(User user) {
+     em.merge(user);
     }
 
     @Override
     public void followerUser(User followee, User follower) {
 
     }
-
     public EntityManager getEM(){
         return this.em;
     }
+    public void setEM(EntityManager em){
+        this.em=em;
+    }
+
 }
