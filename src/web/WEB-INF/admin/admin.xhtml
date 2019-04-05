@@ -1,0 +1,87 @@
+<ui:composition template="/WEB-INF/template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <ui:define name="title">
+        AdminHome
+    </ui:define>
+    <ui:define name="content">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1" >
+                <br/>
+                <br/>
+                <div class="well well-sm">Hi #{sessionUtils.getUserName}, see below for all users:</div>
+
+
+                <table class="table table-responsive table-hover display" id="users">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>Username</th>
+                        <th>Location</th>
+                        <th>Website</th>
+                        <th>Role</th>
+                        <th>Delete</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <ui:repeat value="#{admin.allUsers}" var="usr">
+                        <tr>
+                            <td><img src="${usr.pictureUrl}" class="img-responsive img-rounded pull-left"
+                                     style="max-height: 20px; margin-right: 5px;"/></td>
+                            <td><a style="font-weight: bold" href="//localhost:8080/JEAKwetter_war_exploded/profile.xhtml?u=#{usr.userName}"> #{usr.userName}</a></td>
+                            <td>#{usr.location.city}</td>
+                            <td>#{usr.website}</td>
+                            <td>#{usr.roles[0].roleName}</td>
+                            <td><h:form><h:commandButton action="#{moderatorBean.deleteUser(usr)}" value="X" class="btn btn-danger" ></h:commandButton></h:form></td>
+                        </tr>
+                    </ui:repeat>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1" >
+                <div class="well well-sm">Hi #{sessionUtils.userName}, see below for all kweets:</div>
+
+
+                <table class="table table-responsive table-hover display" id="kweets">
+                    <thead>
+                    <tr>
+                        <th>Text</th>
+                        <th>Date</th>
+                        <th>Poster</th>
+                        <th>Delete</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <ui:repeat value="#{admin.allKweets}" var="kwt">
+                        <tr>
+                            <td>#{kwt.text}</td>
+                            <td>#{kwt.date}</td>
+                            <td>#{kwt.poster.userName}</td>
+                            <td><h:form><h:commandButton action="#{admin.deleteKweet(kwt)}" value="X" class="btn btn-danger" ></h:commandButton></h:form></td>
+                        </tr>
+                    </ui:repeat>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+    </ui:define>
+
+    <ui:define name="script">
+        <script type="application/javascript">
+            $('table.display').DataTable();
+        </script>
+
+    </ui:define>
+
+
+</ui:composition>
