@@ -54,6 +54,9 @@ public class DaoKweetMysql implements IDAOKweet
 
     @Override
     public void deleteKweet(Kweet kweet) {
+        if (!em.contains(kweet)) {
+            kweet = em.merge(kweet);
+        }
         em.remove(kweet);
     }
 

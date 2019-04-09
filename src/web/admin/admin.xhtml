@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets" xml:lang="en" lang="en">
+<head>
+    <title>Title</title>
+</head>
+<h:body>
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1" >
+            <br/>
+            <br/>
+            <div class="well well-sm">Hi , see below for all users:</div>
+            <h:form><h:commandButton action="#{auth.logout}" value="X" class="btn btn-danger" ></h:commandButton></h:form>
+            <table class="table table-responsive table-hover display" id="users">
+                <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Location</th>
+                    <th>Website</th>
+                    <th>Role</th>
+                    <th>Give admin</th>
+                    <th>Give Mod</th>
+                    <th>remove admin</th>
+                    <th>remove Mod</th>
+                </tr>
+                </thead>
+                <tbody>
+                <ui:repeat value="#{admin.allUsers}" var="usr">
+                    <tr>
+                        <td>#{usr.userName}</td>
+                        <td>#{usr.location}</td>
+                        <td>#{usr.website}</td>
+                        <td>#{usr.rolesString}</td>
+                        <td><h:form><h:commandButton action="#{admin.giveRole(usr,'Admin')}" value="X" class="btn btn-danger" ></h:commandButton></h:form></td>
+                        <td><h:form><h:commandButton action="#{admin.giveRole(usr,'Mod')}" value="X" class="btn btn-danger" ></h:commandButton></h:form></td>
+                        <td><h:form><h:commandButton action="#{admin.removeRole(usr,'Admin')}" value="X" class="btn btn-danger" ></h:commandButton></h:form></td>
+                        <td><h:form><h:commandButton action="#{admin.removeRole(usr,'Mod')}" value="X" class="btn btn-danger" ></h:commandButton></h:form></td>
+                    </tr>
+                </ui:repeat>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1" >
+            <div class="well well-sm">see below for all kweets:</div>
+            <table class="table table-responsive table-hover display" id="kweets">
+                <thead>
+                <tr>
+                    <th>Text</th>
+                    <th>Date</th>
+                    <th>Poster</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                <ui:repeat value="#{admin.allKweets}" var="kwt">
+                    <tr>
+                        <td>#{kwt.text}</td>
+                        <td>#{kwt.dateTime}</td>
+                        <td>#{kwt.placer.userName}</td>
+                        <td><h:form><h:commandButton action="#{admin.deleteKweet(kwt)}" value="X" class="btn btn-danger" ></h:commandButton></h:form></td>
+                    </tr>
+                </ui:repeat>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+<ui:define name="script">
+    <script type="application/javascript">
+        $('table.display').DataTable();
+    </script>
+
+</ui:define>
+</h:body>
+
+</html>

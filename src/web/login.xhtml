@@ -1,22 +1,25 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html">
+
 <h:head>
-    <title>login</title>
-    <h:outputStylesheet library="css" name="styles.css"/>
 </h:head>
+
 <h:body>
-    <form action="j_security_check" method="POST">
-        <h:outputLabel for="j_username">Username</h:outputLabel>
-        <h:inputText value="#{login.user}" required="true"  requiredMessage="Please, fill in this field" id="j_username" size="20" />
-        <h:message for="j_username" class="error_message"/>
-
-        <h:outputLabel for="j_password">Password</h:outputLabel>
-        <h:inputSecret value="#{login.pwd}" required="true" requiredMessage="please, fill in this field" id="j_password" size="20"/>
-        <h:message for="j_password" class="error_message"/>
-
-<h:commandButton value="Login" action="#{login.action}"/>
-    </form>
+    <h1>Hello World PrimeFaces</h1>
+    <h:form>
+        <h:outputLabel for="username" value="Username" />
+        <h:inputText id="username" value="#{auth.username}" required="true" />
+        <h:message for="username" />
+        <br />
+        <h:outputLabel for="password" value="Password" />
+        <h:inputSecret id="password" value="#{auth.password}" required="true" />
+        <h:message for="password" />
+        <br />
+        <h:commandButton value="Login" action="#{auth.login}" />
+        <h:messages globalOnly="true" />
+    </h:form>
 </h:body>
 </html>
+
+
+

@@ -10,14 +10,14 @@
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
-<filter>
-    <filter-name>LoggingFilter</filter-name>
-    <filter-class>jsf.filter.loginFilter</filter-class>
-</filter>
-    <filter-mapping>
-        <filter-name>LoggingFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
+<!--<filter>-->
+    <!--<filter-name>LoggingFilter</filter-name>-->
+    <!--<filter-class>jsf.filter.loginFilter</filter-class>-->
+<!--</filter>-->
+    <!--<filter-mapping>-->
+        <!--<filter-name>LoggingFilter</filter-name>-->
+        <!--<url-pattern>/*</url-pattern>-->
+    <!--</filter-mapping>-->
     <welcome-file-list>
         <welcome-file>login.xhtml</welcome-file>
     </welcome-file-list>
@@ -40,7 +40,6 @@
     </servlet-mapping>
 
 
-
     <!-- security -->
     <security-role>
         <description/>
@@ -48,7 +47,7 @@
     </security-role>
     <security-role>
         <description/>
-        <role-name>Moderator</role-name>
+        <role-name>Mod</role-name>
     </security-role>
     <security-role>
         <description/>
@@ -64,15 +63,16 @@
         </web-resource-collection>
         <auth-constraint>
             <role-name>Admin</role-name>
-            <role-name>Moderator</role-name>
+            <role-name>Mod</role-name>
         </auth-constraint>
     </security-constraint>
-
 
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>administrator</web-resource-name>
             <url-pattern>/admin/*</url-pattern>
+            <url-pattern>/faces/admin.xhtml</url-pattern>
+            <url-pattern>/admin.xhtml</url-pattern>
             <http-method>POST</http-method>
             <http-method>GET</http-method>
             <http-method>PUT</http-method>
@@ -81,15 +81,30 @@
         <auth-constraint>
             <role-name>Admin</role-name>
         </auth-constraint>
+
+    </security-constraint>
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>administrator</web-resource-name>
+            <url-pattern>/admin/*</url-pattern>
+            <url-pattern>/faces/admin.xhtml</url-pattern>
+            <url-pattern>/admin.xhtml</url-pattern>
+            <http-method>GET</http-method>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>User</role-name>
+        </auth-constraint>
     </security-constraint>
 
     <login-config>
         <auth-method>FORM</auth-method>
         <realm-name>KwetterSecurityRealm</realm-name>
         <form-login-config>
-            <form-login-page>/admin.xhtml</form-login-page>
+            <form-login-page>/login.xhtml</form-login-page>
             <form-error-page>/error.xhtml</form-error-page>
         </form-login-config>
     </login-config>
+
+
 
 </web-app>

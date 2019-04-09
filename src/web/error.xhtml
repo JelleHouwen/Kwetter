@@ -1,23 +1,23 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html
-        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html" xml:lang="en" lang="en">
-<head>
-    <title>ERROR</title>
-</head>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+<h:head>
+</h:head>
 
 <h:body>
-    Wrong credentials. try again
-    <form action="j_security_check" method="POST">
-        <h:outputLabel for="j_username">Username</h:outputLabel>
-        <h:inputText id="j_username" size="20" />
+    <h1>wrong credentials</h1>
+    <h:form id="login" onsubmit="document.getElementById('login').action='j_security_check';" prependId="false">
+        <h:panelGrid columns="2">
+            <h:outputLabel value="Username:  " />
+            <h:inputText id="j_username" name="j_username"/>
+            <h:outputLabel value="Password:    "/>
+            <h:inputSecret id="j_password" name="j_password"/>
 
-        <h:outputLabel for="j_password">Password</h:outputLabel>
-        <h:inputSecret id="j_password" size="20"/>
-
-        <input type="submit" value="#{bundle['login.submit']}" />
-    </form>
+        </h:panelGrid>
+        <h:commandButton value="login"/>
+    </h:form>
 </h:body>
-
 </html>
+
+
+
