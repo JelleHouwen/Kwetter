@@ -3,21 +3,17 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
-
+    <error-page>
+        <error-code>403</error-code>
+        <location>/error.xhtml</location>
+    </error-page>
     <!-- JSF mapping -->
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
-<!--<filter>-->
-    <!--<filter-name>LoggingFilter</filter-name>-->
-    <!--<filter-class>jsf.filter.loginFilter</filter-class>-->
-<!--</filter>-->
-    <!--<filter-mapping>-->
-        <!--<filter-name>LoggingFilter</filter-name>-->
-        <!--<url-pattern>/*</url-pattern>-->
-    <!--</filter-mapping>-->
+
     <welcome-file-list>
         <welcome-file>login.xhtml</welcome-file>
     </welcome-file-list>
@@ -38,7 +34,10 @@
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
-
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/j_security_check</url-pattern>
+    </servlet-mapping>
 
     <!-- security -->
     <security-role>
@@ -56,45 +55,38 @@
 
     <security-constraint>
         <web-resource-collection>
-            <web-resource-name>Moderator Pages</web-resource-name>
-            <url-pattern>/admin/*</url-pattern>
-            <url-pattern>/faces/admin.xhtml</url-pattern>
-            <url-pattern>/admin.xhtml</url-pattern>
+            <web-resource-name>Mod</web-resource-name>
+            <url-pattern>/mod/*</url-pattern>
+            <url-pattern>/faces/mod.xhtml</url-pattern>
+            <url-pattern>/mod.xhtml</url-pattern>
         </web-resource-collection>
         <auth-constraint>
-            <role-name>Admin</role-name>
             <role-name>Mod</role-name>
         </auth-constraint>
     </security-constraint>
-
     <security-constraint>
         <web-resource-collection>
-            <web-resource-name>administrator</web-resource-name>
+            <web-resource-name>Admin</web-resource-name>
             <url-pattern>/admin/*</url-pattern>
             <url-pattern>/faces/admin.xhtml</url-pattern>
             <url-pattern>/admin.xhtml</url-pattern>
-            <http-method>POST</http-method>
-            <http-method>GET</http-method>
-            <http-method>PUT</http-method>
-            <http-method>DELETE</http-method>
         </web-resource-collection>
         <auth-constraint>
             <role-name>Admin</role-name>
         </auth-constraint>
-
     </security-constraint>
-    <security-constraint>
-        <web-resource-collection>
-            <web-resource-name>administrator</web-resource-name>
-            <url-pattern>/admin/*</url-pattern>
-            <url-pattern>/faces/admin.xhtml</url-pattern>
-            <url-pattern>/admin.xhtml</url-pattern>
-            <http-method>GET</http-method>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>User</role-name>
-        </auth-constraint>
-    </security-constraint>
+    <!--<security-constraint>-->
+        <!--<web-resource-collection>-->
+            <!--<web-resource-name>administrator</web-resource-name>-->
+            <!--<url-pattern>/admin/*</url-pattern>-->
+            <!--<url-pattern>/faces/admin.xhtml</url-pattern>-->
+            <!--<url-pattern>/admin.xhtml</url-pattern>-->
+            <!--<http-method>GET</http-method>-->
+        <!--</web-resource-collection>-->
+        <!--<auth-constraint>-->
+            <!--<role-name>User</role-name>-->
+        <!--</auth-constraint>-->
+    <!--</security-constraint>-->
 
     <login-config>
         <auth-method>FORM</auth-method>

@@ -5,17 +5,8 @@
 </h:head>
 
 <h:body>
-    <h1>wrong credentials</h1>
-    <h:form id="login" onsubmit="document.getElementById('login').action='j_security_check';" prependId="false">
-        <h:panelGrid columns="2">
-            <h:outputLabel value="Username:  " />
-            <h:inputText id="j_username" name="j_username"/>
-            <h:outputLabel value="Password:    "/>
-            <h:inputSecret id="j_password" name="j_password"/>
-
-        </h:panelGrid>
-        <h:commandButton value="login"/>
-    </h:form>
+    <h1>something went wrong =(</h1>
+    <h:form><h:commandButton action="#{auth.logout}" value="X" class="btn btn-danger" ></h:commandButton></h:form>
 </h:body>
 </html>
 

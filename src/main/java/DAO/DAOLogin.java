@@ -13,14 +13,19 @@ public class DAOLogin {
     @PersistenceContext(unitName = "Kwetter")
     private EntityManager em;
 
-    public User validate(String username,String password){
+    public boolean validate(String username,String password){
+        boolean succes = false;
         Query q = em.createNamedQuery("Account.validateUser");
         q.setParameter("username", username);
         q.setParameter("password",password);
         try {
-            return(User)q.getSingleResult();
+            User u =(User)q.getSingleResult();
+            if(u!=null){
+               succes = true;
+            }
         } catch (NoResultException ex) {
-            return null;
+            succes = false;
         }
+        return succes;
     }
 }

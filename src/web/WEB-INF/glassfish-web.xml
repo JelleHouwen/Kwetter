@@ -3,17 +3,14 @@
 <glassfish-web-app error-url="">
     <security-role-mapping>
         <role-name>Admin</role-name>
-        <principal-name>admin</principal-name>
-        <group-name>admin</group-name>
+        <group-name>Admin</group-name>
     </security-role-mapping>
     <security-role-mapping>
         <role-name>User</role-name>
-        <principal-name>user</principal-name>
-        <group-name>user</group-name>
+        <group-name>User</group-name>
     </security-role-mapping>
     <security-role-mapping>
         <role-name>Mod</role-name>
-        <principal-name>Mod</principal-name>
         <group-name>Mod</group-name>
     </security-role-mapping>
 
