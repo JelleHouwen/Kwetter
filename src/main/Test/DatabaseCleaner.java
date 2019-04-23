@@ -15,10 +15,10 @@ public  class DatabaseCleaner {
             Permission.class
     };
 
-    private final EntityManager em;
+    private final EntityManager em =Persistence.createEntityManagerFactory("Kwetter").createEntityManager();
 
-    public DatabaseCleaner(EntityManager entityManager) {
-        em = entityManager;
+    public DatabaseCleaner() {
+
     }
 
     public void clean() throws SQLException {

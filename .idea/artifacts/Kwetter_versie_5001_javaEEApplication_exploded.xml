@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-ear" name="Kwetter versie 5001:javaEEApplication exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/Kwetter_versie_5001_javaEEApplication_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="Kwetter versie 5001/javaeeApplication/javaEEApplication" />
+    </root>
+  </artifact>
+</component>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://xmlns.jcp.org/jsf/core" xml:lang="en" lang="en">
+<head>
+    <title>Title</title>
+</head>
+<h:body>
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1" >
+            <br/>
+            <br/>
+            <div class="well well-sm">Hi , see below for all users:</div>
+            <h:commandButton action="#{auth.logout}" value="X" class="btn btn-danger" ></h:commandButton>
+            <h:dataTable value="#{admin.allUsers}" var="u"
+                         styleClass="order-table"
+                         headerClass="order-table-header"
+                         rowClasses="order-table-odd-row,order-table-even-row"
+            >
+
+                <h:column>
+                    <!-- column header -->
+                    <f:facet name="header">username</f:facet>
+                    <!-- row record -->
+                    #{u.userName}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">roles</f:facet>
+                    #{u.rolesString}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">location</f:facet>
+                    #{u.location}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">password</f:facet>
+                    #{u.password}
+                </h:column>
+                <h:column>
+                <h:selectOneMenu id="roles" binding="#{roleSelect}">
+                    <f:selectItem itemLabel="Select one" itemValue=""/>
+                    <f:selectItems value="#{admin.roles}" />
+                </h:selectOneMenu>
+                    <h:commandButton action="#{admin.giveRole(u,roleSelect.value)}" />
+
+                </h:column>
+            </h:dataTable>
+        </div>
+    </div>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1" >
+            <div class="well well-sm">see below for all kweets:</div>
+            <h:dataTable value="#{admin.allKweets}" var="k"
+                         styleClass="order-table"
+                         headerClass="order-table-header"
+                         rowClasses="order-table-odd-row,order-table-even-row"
+            >
+
+                <h:column>
+                    <!-- column header -->
+                    <f:facet name="header">username</f:facet>
+                    <!-- row record -->
+                    #{k.placer.userName}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">time</f:facet>
+                    #{k.dateTime}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">text</f:facet>
+                    #{k.text}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">password</f:facet>
+                    #{u.password}
+                </h:column>
+            </h:dataTable>
+        </div>
+    </div>
+
+
+<ui:define name="script">
+    <script type="application/javascript">
+        $('table.display').DataTable();
+    </script>
+
+</ui:define>
+</h:body>
+
+</html>

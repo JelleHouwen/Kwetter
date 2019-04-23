@@ -1,4 +1,4 @@
-import DAO.DAOUserImpl;
+import DAO.IDAOUser;
 import Models.User;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,12 +13,11 @@ public class UserServiceTest {
     @InjectMocks
     UserService userService;
     @Mock
-    private DAOUserImpl userDAO;
+    private IDAOUser userDAO;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        userService.setUserDAO(userDAO);
     }
     @Test
     public void shouldAddUserService() throws Exception{
@@ -58,7 +57,7 @@ public class UserServiceTest {
         userService.addUser(user2);
 
         // Act
-        userService.followUser(user1, user2);
+        userService.addFollower(user1.getUserName(), user2.getUserName());
         userService.editUser(user1);
 
         // Assert
