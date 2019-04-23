@@ -75,18 +75,7 @@
             <role-name>Admin</role-name>
         </auth-constraint>
     </security-constraint>
-    <!--<security-constraint>-->
-        <!--<web-resource-collection>-->
-            <!--<web-resource-name>administrator</web-resource-name>-->
-            <!--<url-pattern>/admin/*</url-pattern>-->
-            <!--<url-pattern>/faces/admin.xhtml</url-pattern>-->
-            <!--<url-pattern>/admin.xhtml</url-pattern>-->
-            <!--<http-method>GET</http-method>-->
-        <!--</web-resource-collection>-->
-        <!--<auth-constraint>-->
-            <!--<role-name>User</role-name>-->
-        <!--</auth-constraint>-->
-    <!--</security-constraint>-->
+
 
     <login-config>
         <auth-method>FORM</auth-method>

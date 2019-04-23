@@ -1,0 +1,105 @@
+﻿<div class='parent flex-parent'>
+  <div class='child flex-child'>A
+
+
+    <div class="col-md-5">
+      <div class="panel panel-default">
+        <div class="panel-heading">{{currentUser.userName}}</div>
+        <div class="panel-body">
+          <div class="col-md-3 ">
+            <img class="img-rounded" src="{{currentUser.profilePicture}}" width="200px" height="200px">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+
+
+
+        </div>
+        <div class="panel panel-default">
+          <h2>timeline</h2>
+          <button class="delete" title="delete kweet"
+          (click)="deleteKweet(21)">delete kweet</button>
+        </div>
+        <ul class="kweets">
+          <li *ngFor="let kweet of kweets" [class.selected]="kweet === selectedKweet" (click)="onSelect(kweet)">
+            <span class="badge">{{kweet.ID}}</span> {{kweet.text}}
+
+          </li>
+        </ul>
+
+      </div>
+    </div>
+  </div>
+  <div class='child flex-child'>B
+    <h2>Details</h2>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-2">
+              <img
+                src="https://cdn2.iconfinder.com/data/icons/business-hr-and-recruitment/100/biography_candidate_cv_hr_job_recruitment_-512.png"
+                width="15" height="15">
+              {{currentUser.bio}}
+
+              <div class="row">
+                <div class="col-md-2">
+
+                  <img
+                    src="https://banner2.kisspng.com/20180328/wue/kisspng-computer-icons-web-button-internet-5abb428da52863.2959068315222217096765.jpg"
+                    width="15" height="15">
+                  <a href="{{currentUser.website}}">{{currentUser.website}}</a>
+
+                </div>
+              </div>
+              <div class="col-md-10">
+              </div>
+
+              <div class="row" *ngIf="currentUser.location">
+                <div class="col-md-2">
+                  <img
+                    src="https://banner2.kisspng.com/20180329/lgq/kisspng-computer-icons-location-google-maps-location-icon-5abd9e8462a3c4.6805871415223763244041.jpg"
+                    width="15" height="15">
+                  {{currentUser.location}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body">
+      <h1>followers</h1>
+      <div class="row">
+        <div class="col-md-3" *ngIf="kweetsUser">
+          kweets: {{kweetsUser.length}}
+        </div>
+        <div class="col-md-3" *ngIf="following">
+          following: {{following.length}}
+        </div>
+        <div class="col-md-3" *ngIf="followers">
+          followers: {{followers.length}}
+        </div>
+      </div>
+    </div>
+    <div class="panel-body">
+      <h1>following</h1>
+      <ul>
+          <li *ngFor="let user of following">
+              <a href="/profile/{{user.userName}}">{{user.userName}}</a>
+          </li>
+        </ul>
+  
+    </div>
+
+  </div>
+</div>

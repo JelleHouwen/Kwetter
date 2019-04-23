@@ -37,11 +37,22 @@ public class DaoKweetMysql implements IDAOKweet
     }
 
     @Override
+    public List<Kweet>getTop10KweetsUser(String username){
+        Query q = em.createNamedQuery("Kweet.findByUser");
+        q.setParameter("username", username);
+        q.setMaxResults(10);
+        try {
+            return (List<Kweet>) q.getResultList();
+        } catch (NoResultException ex) {
+            return null;
+        }
+    }
+    @Override
     public List<Kweet> getAllKweetsFromUser(String username) {
         Query q = em.createNamedQuery("Kweet.findByUser");
         q.setParameter("username", username);
         try {
-            return (List<Kweet>) q.getSingleResult();
+            return (List<Kweet>) q.getResultList();
         } catch (NoResultException ex) {
             return null;
         }
@@ -51,6 +62,17 @@ public class DaoKweetMysql implements IDAOKweet
     public List<Kweet> getAllKweets() {
         return (List<Kweet>) em.createNamedQuery("Kweet.findAll", Kweet.class).getResultList();
     }
+    @Override
+    public List<Kweet> getTop20Kweets() {
+        Query q = em.createNamedQuery("Kweet.findLast20");
+        q.setMaxResults(20);
+        try {
+            return (List<Kweet>) q.getResultList();
+        } catch (NoResultException ex) {
+            return null;
+        }
+    }
+
 
     @Override
     public void deleteKweet(Kweet kweet) {
@@ -65,10 +87,4 @@ public class DaoKweetMysql implements IDAOKweet
         em.merge(kweet);
     }
 
-    public EntityManager getEM(){
-        return this.em;
-    }
-    public void setEM(EntityManager EM){
-        this.em= EM;
-    }
 }

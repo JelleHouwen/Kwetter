@@ -39,6 +39,9 @@ public class Admin {
         kwetterService.removeKweet(remove);
     }
 
+    public List<Role> getRoles(){
+        return userService.getAllRoles();
+    }
 
     public List<User> getAllUsers() {
         return userService.getAllUsers();

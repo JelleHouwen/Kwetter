@@ -31,6 +31,22 @@ public class DAOUserMysql implements IDAOUser {
             return (List<User>) query.getResultList();
     }
 
+
+
+@Override
+public boolean addFollower(String user,String follower){
+        boolean returnValue = false;
+       User parent = getUser(user);
+       User followerUser = getUser(follower);
+      returnValue = parent.addFollower(followerUser);
+       followerUser.addFollowing(parent);
+
+       em.persist(parent);
+       em.persist(followerUser);
+
+       return returnValue;
+}
+
     @Override
     public void addUser(User user) {
         if(!this.getAllUsers().contains(user)) {
@@ -50,15 +66,7 @@ public class DAOUserMysql implements IDAOUser {
      em.merge(user);
     }
 
-    @Override
-    public void followerUser(User followee, User follower) {
 
-    }
-    public EntityManager getEM(){
-        return this.em;
-    }
-    public void setEM(EntityManager em){
-        this.em=em;
-    }
+
 
 }

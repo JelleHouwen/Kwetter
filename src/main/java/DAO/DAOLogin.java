@@ -1,7 +1,6 @@
 package DAO;
 
 import Models.User;
-
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -13,7 +12,7 @@ public class DAOLogin {
     @PersistenceContext(unitName = "Kwetter")
     private EntityManager em;
 
-    public boolean validate(String username,String password){
+    public boolean validate(String username,String password) {
         boolean succes = false;
         Query q = em.createNamedQuery("Account.validateUser");
         q.setParameter("username", username);
