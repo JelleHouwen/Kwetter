@@ -3,6 +3,8 @@ package rest;
 
 
 import Models.User;
+import dto.UserDTO;
+import dto.UserMapper;
 import security.JWTTokenGenerator;
 import service.UserService;
 
@@ -12,8 +14,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.List;
-
 
 
 @Path("/auth")
@@ -23,17 +23,21 @@ public class AuthApi {
     @Inject
     UserService userService;
 
+    @Inject
+    UserMapper modelMapper;
     @POST
     @Path("/login")
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
     public Response login(User credentials) {
         try {
-            boolean found = userService.validateUser(credentials.getUserName(), credentials.getPassword());
+            boolean found = userService.validateUser(credentials.getUsername(), credentials.getPassword());
             if (found) {
-                User user = userService.getUser(credentials.getUserName());
+                User user = userService.getUser(credentials.getUsername());
                 String token = JWTTokenGenerator.generateToken(user);
-                return Response.ok(user).header(HttpHeaders.AUTHORIZATION, "Bearer " + token).header("Access-Control-Expose-Headers", "Authorization").build();
+                UserDTO userDTO = modelMapper.mapUserToDTO(user);
+
+                return Response.ok(userDTO).header(HttpHeaders.AUTHORIZATION, "Bearer " + token).header("Access-Control-Expose-Headers", "Authorization").build();
             }
             return Response.status(Response.Status.FORBIDDEN).build();
         } catch (Exception e) {

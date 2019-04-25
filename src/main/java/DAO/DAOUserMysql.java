@@ -46,6 +46,19 @@ public boolean addFollower(String user,String follower){
 
        return returnValue;
 }
+    @Override
+    public boolean removeFollower(String user,String follower){
+        boolean returnValue = false;
+        User parent = getUser(user);
+        User followerUser = getUser(follower);
+        returnValue = parent.removeFollower(followerUser);
+        followerUser.removeFollowing(parent);
+
+        em.persist(parent);
+        em.persist(followerUser);
+
+        return returnValue;
+    }
 
     @Override
     public void addUser(User user) {

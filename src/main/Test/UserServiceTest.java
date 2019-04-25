@@ -57,7 +57,7 @@ public class UserServiceTest {
         userService.addUser(user2);
 
         // Act
-        userService.addFollower(user1.getUserName(), user2.getUserName());
+        userService.addFollower(user1.getUsername(), user2.getUsername());
         userService.editUser(user1);
 
         // Assert
