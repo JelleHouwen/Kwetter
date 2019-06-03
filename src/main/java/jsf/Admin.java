@@ -1,4 +1,4 @@
-package jsf.bean;
+package jsf;
 
 import Models.Kweet;
 import Models.Role;
@@ -23,20 +23,27 @@ public class Admin {
     @EJB
     UserService userService;
 
+    private String role;
     public void removeRole(User user,String roleName) {
         Role r = userService.getRole(roleName);
         user.removeRole(r);
         userService.editUser(user);
     }
     public void giveRole(User user,String roleName){
-        Role r =userService.getRole(roleName);
-        if(user.addRole(r)) {
-            userService.editUser(user);
-        }
+        System.out.println("adding role...");
+       userService.addRole(user,roleName);
     }
     public void deleteKweet(Kweet kweet) {
        Kweet remove = kwetterService.getKweetByID(kweet.getID());
         kwetterService.removeKweet(remove);
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public List<Role> getRoles(){

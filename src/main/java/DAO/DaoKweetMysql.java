@@ -22,7 +22,6 @@ public class DaoKweetMysql implements IDAOKweet
     public boolean addKweet(Kweet kweet) {
         em.persist(kweet);
         return true;
-
     }
 
     @Override
@@ -60,7 +59,13 @@ public class DaoKweetMysql implements IDAOKweet
 
     @Override
     public List<Kweet> getAllKweets() {
-        return (List<Kweet>) em.createNamedQuery("Kweet.findAll", Kweet.class).getResultList();
+        Query q = em.createNamedQuery("Kweet.findAll");
+        try {
+            return (List<Kweet>) q.getResultList();
+        } catch (NoResultException ex) {
+            return null;
+        }
+
     }
     @Override
     public List<Kweet> getTop20Kweets() {
@@ -76,10 +81,19 @@ public class DaoKweetMysql implements IDAOKweet
 
     @Override
     public void deleteKweet(Kweet kweet) {
-        if (!em.contains(kweet)) {
-            kweet = em.merge(kweet);
-        }
         em.remove(kweet);
+    }
+
+
+    @Override
+    public List<Kweet> searchKweets(String search) {
+        Query q = em.createNamedQuery("Kweet.search");
+        q.setParameter("search", "%" + search + "%");
+        try {
+            return (List<Kweet>) q.getResultList();
+        } catch (NoResultException ex) {
+            return null;
+        }
     }
 
     @Override
@@ -87,4 +101,17 @@ public class DaoKweetMysql implements IDAOKweet
         em.merge(kweet);
     }
 
+    @Override
+    public List<Kweet> getKweetsFollowing(int id){
+        Query q1 = em.createNativeQuery("SELECT distinct k.* FROM Kweet k inner join User u inner join user_user uu WHERE k.PLACER_ID in (select u.id from user u ,user_followers uu where uu.User_ID = u.id and uu.follower_id = ? or u.id=?)ORDER BY k.dateTime desc",Kweet.class);
+        q1.setParameter(1, id);
+        q1.setParameter(2, id);
+        q1.setMaxResults(20);
+        try {
+            return (List<Kweet>) q1.getResultList();
+        } catch (NoResultException ex) {
+            return null;
+        }
+
+    }
 }

@@ -18,18 +18,17 @@ public class UserDTO {
     List<Kweet> kweets;
     List<Role> roles;
 
-    public UserDTO(){}
-    public UserDTO(int id, String username, String bio, String location, String website, String profilePicture, List<User> followers, List<User> following, List<Kweet> kweets, List<Role> roles) {
-        this.id = id;
-        this.username = username;
-        this.bio = bio;
-        this.location = location;
-        this.website = website;
-        this.profilePicture = profilePicture;
-        this.followers = followers;
-        this.following = following;
-        this.kweets = kweets;
-        this.roles = roles;
+    public UserDTO(User u){
+        this.id = u.getID();
+        this.username = u.getUsername();
+        this.bio = u.getBio();
+        this.location = u.getLocation();
+        this.website = u.getWebsite();
+        this.profilePicture = u.getProfilePicture();
+        this.followers = u.getFollowers();
+        this.following = u.getFollowing();
+        this.kweets = u.getKweets();
+        this.roles = u.getRoles();
     }
 
     public int getId() {

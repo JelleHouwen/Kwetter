@@ -34,44 +34,38 @@ public class DAOUserMysql implements IDAOUser {
 
 
 @Override
-public boolean addFollower(String user,String follower){
-        boolean returnValue = false;
-       User parent = getUser(user);
-       User followerUser = getUser(follower);
-      returnValue = parent.addFollower(followerUser);
-       followerUser.addFollowing(parent);
-
-       em.persist(parent);
-       em.persist(followerUser);
-
-       return returnValue;
+public boolean addFollower(User user,User follower){
+       em.persist(user);
+       em.persist(follower);
+       return true;
 }
     @Override
-    public boolean removeFollower(String user,String follower){
-        boolean returnValue = false;
-        User parent = getUser(user);
-        User followerUser = getUser(follower);
-        returnValue = parent.removeFollower(followerUser);
-        followerUser.removeFollowing(parent);
+    public boolean removeFollower(User user,User follower){
 
-        em.persist(parent);
-        em.persist(followerUser);
+        em.persist(user);
+        em.persist(follower);
 
-        return returnValue;
+        return true;
+    }
+
+    @Override
+    public List<User> getFollowing(String username) {
+        return this.getUser(username).getFollowing();
+    }
+
+    @Override
+    public List<User> getFollowers(String username) {
+        return  this.getUser(username).getFollowers();
     }
 
     @Override
     public void addUser(User user) {
-        if(!this.getAllUsers().contains(user)) {
             em.persist(user);
-        }
     }
 
     @Override
     public void removeUser(User user) {
-        if(this.getAllUsers().contains(user)) {
-            em.remove(user);
-        }
+        em.remove(user);
     }
 
     @Override

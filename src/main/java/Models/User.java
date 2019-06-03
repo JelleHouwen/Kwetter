@@ -17,7 +17,7 @@ import java.util.List;
         @NamedQuery(name = "Account.getByUserNameContains",
                 query = "SELECT u FROM User u where u.username like :partOfUsername"),
         @NamedQuery(name = "Account.validateUser",
-        query = "SELECT u FROM User u WHERE u.username = :username AND u.password = :password"),
+        query = "SELECT u FROM User u WHERE u.username = :username AND u.password = :password")
 })
 @Table(name = "User")
 public class User implements Serializable {
@@ -76,40 +76,10 @@ public class User implements Serializable {
         this.following = new ArrayList<>();
     }
 
-    public boolean addRole(Role role) {
-        boolean succes= false;
-        List<Role> temp = new ArrayList<>();
-        if(temp.size()>0) {
-            for (Role r : this.roles) {
-                if (r.getRoleName()!=role.getRoleName()) {
-                   temp.add(r);
-                 succes = true;
-                }
-            }
-            this.roles.addAll(temp);
-        }
-        else {
-            this.roles.add(role);
-            succes = true;
-        }
-return succes;
-    }
-
     public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
 
-    public void removeRole(Role role) {
-        List<Role> temp = new ArrayList<>();
-        for(Role r : this.roles){
-            if(r.getRoleName().equals(role.getRoleName())){
-               temp.add(r);
-            }
-        }
-        this.roles.removeAll(temp);
-
-
-    }
 
     public List<Kweet> getKweets() {
         List<Kweet> tempKweets = this.kweets;
@@ -218,43 +188,51 @@ return succes;
     }
 
     public boolean addFollower(User user) {
-        if (user != null && !this.followers.contains(user) && this.getUsername() != user.getUsername()) {
             this.followers.add(user);
             return true;
-        }
-        return false;
     }
     public boolean addFollowing(User user) {
-        if (user != null && !this.following.contains(user) && this.getUsername() != user.getUsername()) {
             this.following.add(user);
             return true;
-        }
-        return false;
     }
 
     public boolean removeFollower(User user) {
-        if (user != null && this.followers.contains(user)) {
             this.followers.remove(user);
             return true;
-        }
-        return false;
     }
     public boolean removeFollowing(User user) {
-        if (user != null && this.following.contains(user)) {
             this.following.remove(user);
             return true;
+    }
+
+    public boolean addRole(Role role) {
+        boolean succes= false;
+        List<Role> temp = new ArrayList<>();
+        if(temp.size()>0) {
+            for (Role r : this.roles) {
+                if (r.getRoleName()!=role.getRoleName()) {
+                    temp.add(r);
+                    succes = true;
+                }
+            }
+            this.roles.addAll(temp);
         }
-        return false;
+        else {
+            this.roles.add(role);
+            succes = true;
+        }
+        return succes;
     }
 
-    public Boolean follow(User user) {
-        this.addFollower(user);
-        return true;
-    }
+    public void removeRole(Role role) {
+        List<Role> temp = new ArrayList<>();
+        for(Role r : this.roles){
+            if(r.getRoleName().equals(role.getRoleName())){
+                temp.add(r);
+            }
+        }
+        this.roles.removeAll(temp);
 
-    public Boolean unFollow(User user) {
-        this.removeFollower(user);
-        return true;
 
     }
 

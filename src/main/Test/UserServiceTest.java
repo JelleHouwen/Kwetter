@@ -1,4 +1,5 @@
 import DAO.IDAOUser;
+import Models.Role;
 import Models.User;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,7 +29,7 @@ public class UserServiceTest {
         userService.addUser(user1);
 
         // Assert
-        verify(userDAO, Mockito.times(1)).addUser(user1);
+        Mockito.verify(userDAO).addUser(user1);
     }
 
 
@@ -49,6 +50,21 @@ public class UserServiceTest {
 
 
     @Test
+    public void shouldAddRoleService(){
+        // Arrange
+        User user1 = mock(User.class);
+        userService.addUser(user1);
+        Role role = mock(Role.class);
+
+
+        // Act
+        userService.addRole(user1, role.getRoleName());
+
+        // Assert
+        Mockito.verify(userDAO, Mockito.times(1)).editUser(user1);
+
+    }
+    @Test
     public void shouldAddAFollowerService(){
         // Arrange
         User user1 = mock(User.class);
@@ -58,10 +74,9 @@ public class UserServiceTest {
 
         // Act
         userService.addFollower(user1.getUsername(), user2.getUsername());
-        userService.editUser(user1);
 
         // Assert
-        Mockito.verify(userDAO, Mockito.times(1)).editUser(user1);
+        Mockito.verify(userDAO, Mockito.times(1)).addFollower(user1,user2);
 
     }
 }

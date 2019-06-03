@@ -10,6 +10,8 @@ public interface IDAOUser {
     void addUser(User user);
     void removeUser(User user);
     void editUser(User user);
-    boolean addFollower(String user,String follower);
-    boolean removeFollower(String user,String follower);
+    boolean addFollower(User user,User follower);
+    boolean removeFollower(User user,User follower);
+    List<User>getFollowing(String username);
+    List<User>getFollowers(String username);
 }

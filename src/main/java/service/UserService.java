@@ -4,10 +4,9 @@ import DAO.IDAORoles;
 import DAO.IDAOUser;
 import Models.Role;
 import Models.User;
-
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Stateless
@@ -26,13 +25,8 @@ public class UserService {
     public User getUser(String username) {
         return userDAO.getUser(username);
     }
-
     public void editUser(User u) {
         userDAO.editUser(u);
-    }
-
-    public void removeUser(User u) {
-        userDAO.removeUser(u);
     }
 
     public List<User> getAllUsers() {
@@ -40,7 +34,9 @@ public class UserService {
     }
 
     public void addUser(User u) {
-        userDAO.addUser(u);
+        if(!this.getAllUsers().contains(u)) {
+            userDAO.addUser(u);
+        }
     }
 
     public Role getRole(String roleName) {
@@ -55,12 +51,54 @@ public class UserService {
         return this.rolesDAO.getAllRoles();
     }
 
+    public boolean addRole(User user,String role){
+        boolean succes= false;
+        List<Role> temp = new ArrayList<>();
+        if(temp.size()>0) {
+            for (Role r : user.getRoles()) {
+                if (r.getRoleName()!=role) {
+                    temp.add(r);
+                    succes = true;
+                }
+            }
+            user.getRoles().addAll(temp);
+            this.editUser(user);
+        }
+        else {
+            Role r =new Role(role);
+            user.addRole(r);
+            this.editUser(user);
+            succes = true;
+        }
+        return succes;
+    }
+
     public boolean addFollower(String user, String follower) {
-        return this.userDAO.addFollower(user, follower);
+        User parent = getUser(user);
+        User followerUser = getUser(follower);
+        if(!parent.getFollowers().contains(followerUser)&&!parent.getUsername().equals(followerUser.getUsername())) {
+            parent.addFollower(followerUser);
+            followerUser.addFollowing(parent);
+            return this.userDAO.addFollower(parent, followerUser);
+        }
+        return false;
     }
 
     public boolean removeFollower(String user, String follower) {
-        return this.userDAO.removeFollower(user, follower);
+        User parent = getUser(user);
+        User followerUser = getUser(follower);
+        if(parent.getFollowers().contains(followerUser)) {
+            parent.removeFollower(followerUser);
+            followerUser.removeFollowing(parent);
+            return this.userDAO.removeFollower(parent, followerUser);
+        }
+        return false;
+    }
+    public List<User>getFollowing(String username){
+        return this.userDAO.getFollowing(username);
+    }
+    public List<User>getFollowers(String username){
+        return this.userDAO.getFollowers(username);
     }
 }
 

@@ -14,4 +14,6 @@ public interface IDAOKweet {
     void editKweet(Kweet kweet);
     List<Kweet> getTop20Kweets();
     List<Kweet> getTop10KweetsUser(String username);
+    List<Kweet> getKweetsFollowing(int id);
+    List<Kweet> searchKweets(String search);
 }

@@ -2,7 +2,7 @@ package rest;
 
 import Models.User;
 import dto.UserDTO;
-import dto.UserMapper;
+import security.JWTTokenNeeded;
 import service.UserService;
 
 import javax.annotation.security.RolesAllowed;
@@ -10,12 +10,11 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
@@ -25,86 +24,60 @@ public class UserApi {
 
     @Inject
     UserService userService;
-
-    @Inject
-    UserMapper modelMapper;
-    @GET
-    @Path("all")
-    @Produces(APPLICATION_JSON)
-    public Collection<UserDTO> findAllUsers(@Context HttpServletResponse response) {
-        List<User> users = userService.getAllUsers();
-        List<UserDTO> userDTOS = new ArrayList<>();
-        for(User u : users) {
-            UserDTO userDTO = modelMapper.mapUserToDTO(u);
-            userDTOS.add(userDTO);
-        }
-        return userDTOS;
-    }
+    @Context
+    UriInfo uriInfo;
 
 
     @GET
     @Path("/{username}")
     @Produces(APPLICATION_JSON)
-    public UserDTO findUser(@PathParam("username") String username){
+    public Response findUser(@PathParam("username") String username){
         User u =userService.getUser(username);
-        UserDTO userDTO = modelMapper.mapUserToDTO(u);
-        return userDTO;
-    }
+        UserDTO userDTO = new UserDTO (u);
+        Link kweets = Link.fromUri(uriInfo.getBaseUriBuilder()
+                .path(KweetApi.class)
+                .path("user")
+                .path(u.getUsername()).build()).build();
 
-    @GET
-    @Path("/following/{username}")
-    @Produces(APPLICATION_JSON)
-    public List<User> getFollowings(@PathParam("username") String username){
-        return userService.getUser(username).getFollowing();
-    }
-    @GET
-    @Path("/followers/{username}")
-    @Produces(APPLICATION_JSON)
-    public List<User> getFollowers(@PathParam("username") String username){
-        return userService.getUser(username).getFollowers();
-    }
+        Link followers = Link.fromUri(uriInfo.getBaseUriBuilder()
+                .path(UserApi.class)
+                .path("getfollowers")
+                .path(u.getUsername()).build()).build();
 
-
-    @POST
-    @Path("remove/{username}")
-    @RolesAllowed("Admin")
-    public String removeUser(@PathParam("username") String userName) {
-        User user = userService.getUser(userName);
-        userService.removeUser(user);
-        return "User has been removed.";
-    }
-
-    @POST
-    @Path("create/{username}")
-    public String createUser(@PathParam("username") String userName) {
-
-        User user = new User(userName);
-        userService.addUser(user);
-        User addedUser = userService.getUser(userName);
-        if (addedUser != null) {
-            return user.getUsername() + " successfully added.";
+        Link following = Link.fromUri(uriInfo.getBaseUriBuilder()
+                .path(UserApi.class)
+                .path("getfollowing")
+                .path(u.getUsername()).build()).build();
+        try {
+            return Response.ok(userDTO).links(kweets).links(followers).links(following).build();
+        }catch(Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("user not found ").build();
         }
-        return "User could not be added.";
     }
+
     @PUT
     @Path("update/{username}")
     @Consumes({APPLICATION_JSON})
     @Produces({APPLICATION_JSON})
     public Response updateUser(User user) {
+        try {
         userService.editUser(user);
-        return Response.ok(user, MediaType.APPLICATION_JSON).build();
+        return Response.ok(user, MediaType.APPLICATION_JSON).build();}
+        catch(Exception e){
+            return Response.status(Response.Status.BAD_REQUEST).entity("User not edited").build();
+        }
     }
+
     @PUT
     @Path("follow/{follower}/{yourUsername}")
     @Produces({APPLICATION_JSON})
-    public Response updateUser(@PathParam("follower")String follower,@PathParam("yourUsername")String yourUsername) {
+    public Response followUser(@PathParam("follower")String follower,@PathParam("yourUsername")String yourUsername) {
         boolean succes = false;
         if(follower!=null&&yourUsername!=null){
           succes =  userService.addFollower(yourUsername,follower);
             return Response.ok(succes, APPLICATION_JSON).build();
         }
-        else return Response.status(Response.Status.BAD_REQUEST).entity("follower not added").build();
-
+        else return Response.status(Response.Status.BAD_REQUEST).entity("failed to add "+ follower).build();
     }
 
     @PUT
@@ -116,9 +89,37 @@ public class UserApi {
             succes =  userService.removeFollower(yourUsername,follower);
             return Response.ok(succes, APPLICATION_JSON).build();
         }
-        else return Response.status(Response.Status.BAD_REQUEST).entity("follower not added").build();
+        else return Response.status(Response.Status.BAD_REQUEST).entity("failed to unfollow "+follower).build();
 
     }
 
+    @GET
+    @Path("getfollowers/{username}")
+    @Produces({APPLICATION_JSON})
+    public Response getFollowers(@PathParam("username")String user) {
+    List<User> followers = userService.getFollowers(user);
+            if(followers.size()>0){
+                return Response.ok(followers, APPLICATION_JSON).build();
+            } else return Response.ok(new ArrayList<User>()).build();
+
+    }
+    @GET
+    @Path("getfollowing/{username}")
+    @Produces({APPLICATION_JSON})
+    public Response getFollowing(@PathParam("username")String user) {
+        List<User> following = userService.getFollowing(user);
+        if(following.size()>0){
+            return Response.ok(following, APPLICATION_JSON).build();
+        } else return Response.ok(new ArrayList<User>()).build();
+
+    }
+    @GET
+    @Path("all")
+    @Produces(APPLICATION_JSON)
+    public Collection<UserDTO> findAllUsers(@Context HttpServletResponse response) {
+
+        List<UserDTO> users = userService.getAllUsers().stream().map(m -> new UserDTO(m)).collect(Collectors.toList());
+        return users;
+    }
 
 }
