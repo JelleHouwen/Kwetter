@@ -8,7 +8,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 @Stateless
-public class DAOLogin {
+public class DAOLogin implements IDAOLogin {
     @PersistenceContext(unitName = "Kwetter")
     private EntityManager em;
 

@@ -33,6 +33,8 @@ public class Kweet implements Serializable {
     @GeneratedValue
     private int ID;
     private String text;
+
+
     private Date dateTime;
     @JsonbTransient
     @OneToMany
@@ -51,7 +53,7 @@ public class Kweet implements Serializable {
         this.text = text;
         this.placer = user;
         this.dateTime= new Date();
-   }
+    }
 
     public Kweet() {
         this.dateTime= new Date();
@@ -89,6 +91,9 @@ public class Kweet implements Serializable {
         this.likes.add(user);
     }
 
+    public void setPlacer(User placer) {
+        this.placer = placer;
+    }
     public void setLikes(List<User> likes) {
         this.likes = likes;
     }

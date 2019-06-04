@@ -1,11 +1,9 @@
-package rest;
+package rest.resources;
 
 import Models.User;
 import dto.UserDTO;
-import security.JWTTokenNeeded;
 import service.UserService;
 
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
@@ -20,7 +18,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 @Stateless
 @Path("/users")
-public class UserApi {
+public class UserResource {
 
     @Inject
     UserService userService;
@@ -35,17 +33,17 @@ public class UserApi {
         User u =userService.getUser(username);
         UserDTO userDTO = new UserDTO (u);
         Link kweets = Link.fromUri(uriInfo.getBaseUriBuilder()
-                .path(KweetApi.class)
+                .path(KweetResource.class)
                 .path("user")
                 .path(u.getUsername()).build()).build();
 
         Link followers = Link.fromUri(uriInfo.getBaseUriBuilder()
-                .path(UserApi.class)
+                .path(UserResource.class)
                 .path("getfollowers")
                 .path(u.getUsername()).build()).build();
 
         Link following = Link.fromUri(uriInfo.getBaseUriBuilder()
-                .path(UserApi.class)
+                .path(UserResource.class)
                 .path("getfollowing")
                 .path(u.getUsername()).build()).build();
         try {

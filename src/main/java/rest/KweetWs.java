@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 @RequestScoped
-@ServerEndpoint("/echo")
+@ServerEndpoint("/wskweet")
 public class KweetWs {
         private static final Logger logger = Logger.getLogger(KweetWs.class.getName());
 

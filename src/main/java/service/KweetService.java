@@ -2,6 +2,8 @@ package service;
 
 import DAO.*;
 import Models.Kweet;
+import Models.User;
+
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.util.List;
@@ -10,9 +12,12 @@ import java.util.List;
 public class KweetService {
     @Inject
     private IDAOKweet kweetDAO;
+    @Inject IDAOUser userDAO;
     public KweetService(){
     }
     public void addKweet(Kweet k){
+        User kweetUser = userDAO.getUser(k.getPlacer().getUsername());
+        k.setPlacer(kweetUser);
         kweetDAO.addKweet(k);
     }
     public void removeKweet(Kweet k) {

@@ -1,9 +1,9 @@
-package rest;
+package rest.resources;
 
 import Models.Kweet;
 import Models.User;
 import dto.KweetDTO;
-import security.JWTTokenNeeded;
+import rest.KweetWs;
 import service.KweetService;
 import service.UserService;
 
@@ -20,7 +20,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 @Stateless
 @Path("/kweets")
-public class KweetApi {
+public class KweetResource {
 
     @Inject
     KweetService kweetService;
@@ -39,7 +39,7 @@ public class KweetApi {
         KweetDTO kweet =new KweetDTO(kweetService.getKweetByID(id));
         try{
             Link user = Link.fromUri(uriInfo.getBaseUriBuilder()
-                    .path(UserApi.class)
+                    .path(UserResource.class)
                     .path("user")
                     .path(kweet.getPlacer().getUsername()).build()).build();
 
@@ -119,20 +119,25 @@ public class KweetApi {
     }
 
     @POST
-    @Path("/add/{userName}&{text}")
-    @Produces(APPLICATION_JSON)
-    public Response insertKweet(@PathParam("userName") String userName, @PathParam("text") String text,@Context HttpServletResponse response) {
-        response.setHeader("Access-Control-Allow-Origin" , "*");
-        User u =userService.getUser(userName);
-        Kweet kweet = new Kweet(text,u);
-        if(u!=null && kweet !=null){
+    @Path("add")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response insertKweet(Kweet kweet) {
+        System.out.println("ADDING KWEET");
+        System.out.println(kweet.getText());
+        System.out.println(kweet.getPlacer().getUsername());
+        try {
 
+            System.out.println(kweet.getPlacer().getUsername());
             kweetService.addKweet(kweet);
             ws.sendMessages();
-            return Response.ok(kweet).build();}
-
-        return Response.status(Response.Status.BAD_REQUEST).build();
+            return Response.ok(kweet, MediaType.APPLICATION_JSON).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
     }
+
+
     @GET
     @Path("all")
     @Produces(MediaType.APPLICATION_JSON)

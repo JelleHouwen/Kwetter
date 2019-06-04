@@ -1,5 +1,6 @@
 package service;
 import DAO.DAOLogin;
+import DAO.IDAOLogin;
 import DAO.IDAORoles;
 import DAO.IDAOUser;
 import Models.Role;
@@ -17,7 +18,7 @@ public class UserService {
     @Inject
     private IDAORoles rolesDAO;
     @Inject
-    private DAOLogin login;
+    private IDAOLogin login;
 
     public UserService() {
     }

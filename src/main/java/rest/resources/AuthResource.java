@@ -1,4 +1,4 @@
-package rest;
+package rest.resources;
 
 
 
@@ -17,7 +17,7 @@ import javax.ws.rs.core.Response;
 
 @Path("/auth")
 @Stateless
-public class AuthApi {
+public class AuthResource {
 
     @Inject
     UserService userService;

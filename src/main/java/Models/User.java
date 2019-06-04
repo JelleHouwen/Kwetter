@@ -205,35 +205,12 @@ public class User implements Serializable {
             return true;
     }
 
-    public boolean addRole(Role role) {
-        boolean succes= false;
-        List<Role> temp = new ArrayList<>();
-        if(temp.size()>0) {
-            for (Role r : this.roles) {
-                if (r.getRoleName()!=role.getRoleName()) {
-                    temp.add(r);
-                    succes = true;
-                }
-            }
-            this.roles.addAll(temp);
-        }
-        else {
-            this.roles.add(role);
-            succes = true;
-        }
-        return succes;
+    public void addRole(Role role) {
+        this.roles.add(role);
     }
 
     public void removeRole(Role role) {
-        List<Role> temp = new ArrayList<>();
-        for(Role r : this.roles){
-            if(r.getRoleName().equals(role.getRoleName())){
-                temp.add(r);
-            }
-        }
-        this.roles.removeAll(temp);
-
-
+        this.roles.remove(role);
     }
 
 
