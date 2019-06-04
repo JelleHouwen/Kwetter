@@ -12,10 +12,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     currentUserSubscription: Subscription;
     profileUser: User;
     last10kweets: Kweet[]=[];
-    allKweets:Kweet[]=[];
     name:string;
-    following: User[]=[];
-    followers: User[]=[];
     selectedKweet: Kweet;
     constructor(
         private authenticationService: AuthenticationService,
@@ -34,10 +31,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       this.route.paramMap.subscribe(params => {
         this.name = params.get("username");
         this.loadUser(params.get("username"));
-        this.loadAllKweetsFromUser(params.get("username"));
-        this.loadKweetsCurrentUser(params.get("username"));
-        this.loadFollowers(params.get("username"));
-        this.loadFollowing(params.get("username"));
+        this.loadLast10FromUser(params.get("username"));
       });
   
     }
@@ -56,7 +50,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
 
 
-    private loadAllKweetsFromUser(username:string) {
+    private loadLast10FromUser(username:string) {
     this.kweetService.getLast10User(username).pipe(first()).subscribe(kweets => {
         this.last10kweets = kweets;
     });
@@ -67,22 +61,28 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.router.navigate(["username", user]);
       }
 
-      private loadKweetsCurrentUser(username:string) {
-        this.kweetService.getByUsername(username).pipe(first()).subscribe(kweetsUser => {
-            this.allKweets = kweetsUser;
-        });
-    }
-    private loadFollowing(username:string) {
-        this.userService.getFollowing(username).pipe(first()).subscribe(following => {
-            this.following = following;
-        });
-    }
-    private loadFollowers(username:string) {
-        this.userService.getFollowers(username).pipe(first()).subscribe(followers => {
-            this.followers = followers;
-        });
-    }
     onSelect(kweet: Kweet): void {
         this.selectedKweet = kweet;
       }
+      follow(username:string){
+         this.userService.follow(this.currentUser.username,username).subscribe();
+          this.checkinfollowers();
+          this.ngOnInit();
+      }
+      unfollow(username:string){
+        this.userService.unfollow(this.currentUser.username,username).subscribe();
+      this.checkinfollowers();
+      this.ngOnInit();
+
+    }
+checkinfollowers(){
+    let found = false;
+    for(let key of this.profileUser.followers){        
+            if(key.username ==this.currentUser.username){
+                found = true;
+            }
+    }
+     return found;
+}
+
 }

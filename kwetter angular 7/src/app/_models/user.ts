@@ -1,15 +1,15 @@
 ﻿import { Kweet } from "./kweet";
 import { Role } from "./role";
 export class User {
-    ID: number;
-    userName: string;
+    id: number;
+    username: string;
     password: string;
     website: string;
     bio: string;
     location:string;
     profilePicture:string;
-    following:User;
-    followers:User;
-    kweets:Kweet;
+    following:User[];
+    followers:User[];
+    kweets:Kweet[];
     roles: Role[];
 }
