@@ -27,10 +27,19 @@ export class UserService {
     }
 
     update(user: User) {
-        return this.http.put(`${environment.apiUrl}/users/${user.ID}`, user);
+        return this.http.put(`${environment.apiUrl}/users/${user.id}`, user);
     }
 
     delete(id: number) {
         return this.http.delete(`${environment.apiUrl}/users/${id}`);
     }
+    follow(yourusername: string,otherusername) {
+        console.log(yourusername+" is following user: "+otherusername)
+        return this.http.put(`${environment.apiUrl}/users/follow/${yourusername}/${otherusername}`,null);
+    }
+    unfollow(yourusername: string,otherusername) {
+        console.log(yourusername+" is no longer following user: "+otherusername)
+        return this.http.put(`${environment.apiUrl}/users/unfollow/${yourusername}/${otherusername}`,null);
+    }
+
 }

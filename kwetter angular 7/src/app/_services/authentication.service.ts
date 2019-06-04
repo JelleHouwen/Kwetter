@@ -24,15 +24,16 @@ export class AuthenticationService {
         this.currentUser = this.currentUserSubject.asObservable();
      }
 
-     login(userName: string, password: string) {
+     login(username: string, password: string) {
         const hash = sha256.create();
         hash.update(password);
-        return this.http.post<any>(`${environment.apiUrl}/auth/login/`,{  userName, password : hash.hex()}, {observe: 'response'})
+        return this.http.post<any>(`${environment.apiUrl}/auth/login/`,{  username, password : hash.hex()}, {observe: 'response'})
                  .pipe(map(user => {
             if (user) {
               // login successful if there's a jwt token in the response
               let token = user.headers.get('AUTHORIZATION');
               token = token.substring('Bearer '.length).trim();
+              console.log(token);
               // store user details and jwt token in local storage to keep user logged in between page refreshes
               localStorage.setItem('currentUser', JSON.stringify(user.body));
               localStorage.setItem('authorizationToken', JSON.stringify(token));

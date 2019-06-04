@@ -4,7 +4,14 @@
   
       <div class="col-md-5">
         <div class="panel panel-default">
-          <div class="panel-heading">{{profileUser.userName}}</div>
+          <div  *ngIf="!checkinfollowers()">
+          <button class="follow" title="follow"
+          (click)="follow(profileUser.username)">follow   {{profileUser.username}}</button>
+        </div>
+        <div *ngIf="checkinfollowers()">
+          <button class="unfollow" title="unfollow"
+          (click)="unfollow(profileUser.username)">unfollow   {{profileUser.username}}</button>
+        </div>
           <div class="panel-body">
             <div class="col-md-3 ">
               <img class="img-rounded" src="{{profileUser.profilePicture}}" width="200px" height="200px">
@@ -24,12 +31,28 @@
             <h2>timeline</h2>
   
           </div>
-  
-          <ul class="kweets">
-            <li *ngFor="let kweet of last10kweets" [class.selected]="kweet === selectedKweet" (click)="onSelect(kweet)">
-              <span class="badge">{{kweet.id}}</span> {{kweet.text}}
-            </li>
+          <ul>
+              <table class="table table-striped">
+                  <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>text</th>
+                    <th>poster</th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let kweet of last10kweets">
+                    <th scope="row">{{kweet.id}}</th>
+                    <td>{{ kweet.text }}</td>
+                    <td>{{ kweet.placer.username}}</td>
+                  </tr>
+                  </tbody>
+                </table>
+           
           </ul>
+        
   
         </div>
       </div>
@@ -79,22 +102,22 @@
       <div class="panel-body">
         <h1>followers</h1>
         <div class="row">
-          <div class="col-md-3" *ngIf="allKweets">
-            kweets: {{allKweets.length}}
+          <div class="col-md-3" *ngIf="profileUser.kweets">
+            kweets: {{profileUser.kweets.length}}
           </div>
-          <div class="col-md-3" *ngIf="following">
-            following: {{following.length}}
+          <div class="col-md-3" *ngIf="profileUser.following">
+            following: {{profileUser.following.length}}
           </div>
-          <div class="col-md-3" *ngIf="followers">
-            followers: {{followers.length}}
+          <div class="col-md-3" *ngIf="profileUser.followers">
+            followers: {{profileUser.followers.length}}
           </div>
         </div>
       </div>
       <div class="panel-body">
         <h1>following</h1>
         <ul>
-            <li *ngFor="let user of following">
-                <a href="/profile/{{user.userName}}">{{user.userName}}</a>
+            <li *ngFor="let user of profileUser.following">
+                <a href="/profile/{{user.username}}">{{user.username}}</a>
             </li>
           </ul>
     

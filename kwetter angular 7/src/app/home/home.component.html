@@ -1,10 +1,21 @@
-﻿<div class='parent flex-parent'>
+﻿
+<div class='parent flex-parent'>
   <div class='child flex-child'>A
-
+      <div ng-app="app" ng-controller="ctrl" id="app">
+          <!-- 'keyword' will serve as the model for what the user enters -->
+         
+          <ul *ngIf=searchKweets>
+            <!-- display each art object using ng-repeat directive-->
+            <li  ng-repeat="kweet in searchkweets ">
+              {{kweet.text}}
+            </li>
+          </ul>
+        </div>
+      
 
     <div class="col-md-5">
       <div class="panel panel-default">
-        <div class="panel-heading">{{currentUser.userName}}</div>
+        <div class="panel-heading">{{currentUser.username}}</div>
         <div class="panel-body">
           <div class="col-md-3 ">
             <img class="img-rounded" src="{{currentUser.profilePicture}}" width="200px" height="200px">
@@ -16,26 +27,64 @@
     <div class="col-md-6">
       <div class="panel panel-default">
         <div class="panel-heading">
-
+   
 
 
         </div>
         <div class="panel panel-default">
           <h2>timeline</h2>
-          <button class="delete" title="delete kweet"
-          (click)="deleteKweet(21)">delete kweet</button>
         </div>
-        <ul class="kweets">
-          <li *ngFor="let kweet of kweets" [class.selected]="kweet === selectedKweet" (click)="onSelect(kweet)">
-            <span class="badge">{{kweet.ID}}</span> {{kweet.text}}
-
-          </li>
+        <form (ngSubmit)="onPost()">
+        <div class="md-form mt-0">
+            <input class="form-control" type="text" [(ngModel)]="post" name="search"placeholder="hello world">
+            <button type="submit" class="btn btn-success">post</button>
+          </div>
+        </form>
+          <form (ngSubmit)="search()">
+              <div class="md-form mt-0">
+                  <input class="form-control" type="text" [(ngModel)]="regModel" name="search"placeholder="search...">
+                  <button type="submit" class="btn btn-success">search</button>
+              </div>
+       
+            </form>
+        <ul>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                  <th>#</th>
+                  <th>text</th>
+                  <th>poster</th>
+                  <th></th>
+                  <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let kweet of kweetsUser">
+                  <th scope="row">{{kweet.id}}</th>
+                  <td>{{ kweet.text }}</td>
+                  <td>{{ kweet.placer.username}}</td>
+                </tr>
+                </tbody>
+              </table>
+         
         </ul>
 
       </div>
     </div>
   </div>
   <div class='child flex-child'>B
+    <h2>Trending</h2>
+    <div class="panel-body">
+        <div class="row">
+            <ul>
+                <li *ngFor="let topic of trendingTopics">
+                    {{topic.title}}
+                </li>
+              </ul>
+        
+      </div>
+    </div>
+
     <h2>Details</h2>
     <div class="panel-body">
       <div class="row">
@@ -80,22 +129,22 @@
     <div class="panel-body">
       <h1>followers</h1>
       <div class="row">
-        <div class="col-md-3" *ngIf="kweetsUser">
-          kweets: {{kweetsUser.length}}
+        <div class="col-md-3" *ngIf="currentUser.kweets">
+          kweets: {{currentUser.kweets.length}}
         </div>
-        <div class="col-md-3" *ngIf="following">
-          following: {{following.length}}
+        <div class="col-md-3" *ngIf="currentUser.following">
+          following: {{currentUser.following.length}}
         </div>
-        <div class="col-md-3" *ngIf="followers">
-          followers: {{followers.length}}
+        <div class="col-md-3" *ngIf="currentUser.followers">
+          followers: {{currentUser.followers.length}}
         </div>
       </div>
     </div>
     <div class="panel-body">
       <h1>following</h1>
       <ul>
-          <li *ngFor="let user of following">
-              <a href="/profile/{{user.userName}}">{{user.userName}}</a>
+          <li *ngFor="let user of currentUser.following">
+              <a href="/profile/{{user.username}}">{{user.username}}</a>
           </li>
         </ul>
   
@@ -103,3 +152,8 @@
 
   </div>
 </div>
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0/angular.min.js"></script>
+  <script src="search.js"></script>

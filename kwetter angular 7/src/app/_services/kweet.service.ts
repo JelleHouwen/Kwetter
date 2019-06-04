@@ -1,21 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
-import { HttpHeaders } from '@angular/common/http';
 import { environment } from '@environments/environment';
 import { Kweet } from '@app/_models/kweet';
+import { User } from '@app/_models';
+import { Observable } from 'rxjs';
 
-const httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type':  'application/json'
-    })
-  };
+
 @Injectable({ providedIn: 'root' })
 export class KweetService {
   
-    constructor(private http: HttpClient) {
-        
-     }
+    constructor(private http: HttpClient) {}
 
     getLast20() {
         return this.http.get<Kweet[]>(`${environment.apiUrl}/kweets/last`);
@@ -30,11 +24,19 @@ export class KweetService {
     getByUsername(username: string) {
         return this.http.get<Kweet[]>(`${environment.apiUrl}/kweets/getAll/${username}`);
     }
-
-    postKweet(username: string,text:string) {
-        return this.http.post(`${environment.apiUrl}/kweets/add/${username}`,`&${text}`);
+    getAll() {
+        return this.http.get<Kweet[]>(`${environment.apiUrl}/kweets/all`);
     }
-       deleteKweet (id: number) {
+    search(search: string):Observable<Kweet[]> {
+        return this.http.get<Kweet[]>(`${environment.apiUrl}/kweets/search/${search}`);
+    }
+    getByFollowing(user: User) {
+        return this.http.get<Kweet[]>(`${environment.apiUrl}/kweets/getAllFollowing/${user.id}`);
+    }
+    postKweet(kweet:Kweet) {
+        return this.http.post<Kweet>(`${environment.apiUrl}/kweets/add`,kweet);
+    }
+     deleteKweet (id: number) {
         return this.http.delete(`${environment.apiUrl}/kweets/remove/${id}`);
       }
 
