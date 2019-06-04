@@ -45,8 +45,18 @@ public class KweetServiceTest {
         kweet.setText("hi");
         // Act
         kweetService.editKweet(kweet);
-
         // Assert
         Mockito.verify(kweetDAO, Mockito.times(1)).editKweet(kweet);
+    }
+    @Test
+    public void shouldRemoveKweetService() throws Exception{
+        // Arrange
+        Kweet kweet = mock(Kweet.class);
+
+        kweetService.addKweet(kweet);
+        // Act
+        kweetService.removeKweet(kweet);
+        // Assert
+        Mockito.verify(kweetDAO, Mockito.times(1)).getAllKweets();
     }
 }

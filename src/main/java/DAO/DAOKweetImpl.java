@@ -39,6 +39,17 @@ public class DAOKweetImpl implements IDAOKweet{
     @Override
     public List<Kweet>getTop10KweetsUser(String username){return null;
     }
+
+    @Override
+    public List<Kweet> getKweetsFollowing(int id) {
+        return null;
+    }
+
+    @Override
+    public List<Kweet> searchKweets(String search) {
+        return null;
+    }
+
     @Override
     public List<Kweet> getAllKweetsFromUser(String username) {
         User user =userService.getUser(username);

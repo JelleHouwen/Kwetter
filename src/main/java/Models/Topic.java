@@ -7,6 +7,8 @@ import java.io.Serializable;
 @Entity
 @Table(name = "Topic")
 @XmlRootElement
+@NamedQuery(name = "Topic.getTrendingTopics",
+        query = "SELECT t, count(t.title)as total  from Topic t group by t.title order by total ")
 public class Topic implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

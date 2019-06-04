@@ -1,10 +1,9 @@
-package rest;
+package rest.resources;
 
 
 
 import Models.User;
 import dto.UserDTO;
-import dto.UserMapper;
 import security.JWTTokenGenerator;
 import service.UserService;
 
@@ -18,13 +17,12 @@ import javax.ws.rs.core.Response;
 
 @Path("/auth")
 @Stateless
-public class AuthApi {
+public class AuthResource {
 
     @Inject
     UserService userService;
 
-    @Inject
-    UserMapper modelMapper;
+
     @POST
     @Path("/login")
     @Produces({MediaType.APPLICATION_JSON})
@@ -35,7 +33,7 @@ public class AuthApi {
             if (found) {
                 User user = userService.getUser(credentials.getUsername());
                 String token = JWTTokenGenerator.generateToken(user);
-                UserDTO userDTO = modelMapper.mapUserToDTO(user);
+                UserDTO userDTO = new UserDTO(user);
 
                 return Response.ok(userDTO).header(HttpHeaders.AUTHORIZATION, "Bearer " + token).header("Access-Control-Expose-Headers", "Authorization").build();
             }

@@ -47,21 +47,30 @@ public class DAOUserImpl implements IDAOUser {
     }
 
     @Override
-    public boolean addFollower(String user,String follower){
-       User parent = this.getUser(user);
-       User followerUser = this.getUser(follower);
+    public boolean addFollower(User user,User follower){
 
-       parent.addFollower(followerUser);
-       return followerUser.addFollowing(parent);
+
+       user.addFollower(follower);
+       return follower.addFollowing(user);
     }
     @Override
-    public boolean removeFollower(String user,String follower){
-        User parent = this.getUser(user);
-        User followerUser = this.getUser(follower);
+    public boolean removeFollower(User user,User follower){
 
-        parent.removeFollower(followerUser);
-        return followerUser.removeFollowing(parent);
+
+        user.removeFollower(follower);
+        return follower.removeFollowing(user);
     }
+
+    @Override
+    public List<User> getFollowing(String username) {
+        return null;
+    }
+
+    @Override
+    public List<User> getFollowers(String username) {
+        return null;
+    }
+
     @Override
     public void removeUser(User user) {
         if (this.users.contains(user)) {

@@ -12,8 +12,8 @@
         <div class="col-md-10 col-md-offset-1" >
             <br/>
             <br/>
-            <div class="well well-sm">Hi , see below for all users:</div>
-            <h:commandButton action="#{auth.logout}" value="X" class="btn btn-danger" ></h:commandButton>
+            <h:form><h:commandButton action="#{auth.logout}" value="X" class="btn btn-danger" ></h:commandButton></h:form>
+
             <h:dataTable value="#{admin.allUsers}" var="u"
                          styleClass="order-table"
                          headerClass="order-table-header"
@@ -41,15 +41,25 @@
                     <f:facet name="header">password</f:facet>
                     #{u.password}
                 </h:column>
-                <h:column>
-                <h:selectOneMenu id="roles" binding="#{roleSelect}">
-                    <f:selectItem itemLabel="Select one" itemValue=""/>
-                    <f:selectItems value="#{admin.roles}" />
-                </h:selectOneMenu>
-                    <h:commandButton action="#{admin.giveRole(u,roleSelect.value)}" />
 
+                <h:column>
+                    <h:form>
+                    <h:selectOneMenu value="#{admin.role}">
+                        <f:selectItems var="role" value="#{admin.roles}" itemValue="#{role.roleName}" itemLabel="#{role.roleName}" />
+                    </h:selectOneMenu>
+                    <h:commandButton value="add role" action="#{admin.giveRole(u,admin.role)}"></h:commandButton></h:form>
                 </h:column>
+
+                <h:column>
+                    <h:form>
+                        <h:selectOneMenu value="#{admin.role}">
+                            <f:selectItems var="role1" value="#{admin.roles}"  />
+                        </h:selectOneMenu>
+                        <h:commandButton value="remove role" action="#{admin.removeRole(u,admin.role)}"></h:commandButton></h:form>
+                </h:column>
+
             </h:dataTable>
+
         </div>
     </div>
     <br/>
@@ -59,39 +69,33 @@
     <div class="row">
         <div class="col-md-10 col-md-offset-1" >
             <div class="well well-sm">see below for all kweets:</div>
-            <h:dataTable value="#{admin.allKweets}" var="k"
-                         styleClass="order-table"
-                         headerClass="order-table-header"
-                         rowClasses="order-table-odd-row,order-table-even-row"
-            >
-
-                <h:column>
-                    <!-- column header -->
-                    <f:facet name="header">username</f:facet>
-                    <!-- row record -->
-                    #{k.placer.username}
-                </h:column>
-
-                <h:column>
-                    <f:facet name="header">time</f:facet>
-                    #{k.dateTime}
-                </h:column>
-
-                <h:column>
-                    <f:facet name="header">text</f:facet>
-                    #{k.text}
-                </h:column>
-
-                <h:column>
-                    <f:facet name="header">password</f:facet>
-                    #{u.password}
-                </h:column>
-            </h:dataTable>
+            <h:form><h:commandButton action="#{auth.logout}" value="X" class="btn btn-danger" ></h:commandButton></h:form>
+            <table class="table table-responsive table-hover display" id="kweets">
+                <thead>
+                <tr>
+                    <th>Text</th>
+                    <th>Date</th>
+                    <th>Poster</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                <ui:repeat value="#{admin.allKweets}" var="kwt">
+                    <tr>
+                        <td>#{kwt.text}</td>
+                        <td>#{kwt.dateTime}</td>
+                        <td>#{kwt.placer.username}</td>
+                        <td><h:form><h:commandButton action="#{admin.deleteKweet(kwt)}" value="X" class="btn btn-danger" ></h:commandButton></h:form></td>
+                    </tr>
+                </ui:repeat>
+                </tbody>
+            </table>
         </div>
     </div>
 
 
-<ui:define name="script">
+
+    <ui:define name="script">
     <script type="application/javascript">
         $('table.display').DataTable();
     </script>

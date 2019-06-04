@@ -12,6 +12,7 @@ import java.util.List;
 
 @Stateless
 public class DAORoles implements IDAORoles {
+
     @PersistenceContext(unitName = "Kwetter")
     private EntityManager em;
 

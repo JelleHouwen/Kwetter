@@ -1,5 +1,6 @@
 package dto;
 
+import Models.Kweet;
 import Models.User;
 
 import java.util.Date;
@@ -8,13 +9,13 @@ public class KweetDTO {
     int id;
     String text;
     Date date;
-    String placer;
+    User placer;
 
-    public KweetDTO(int id, String text, Date date, String placer) {
-        this.id = id;
-        this.text = text;
-        this.date = date;
-        this.placer = placer;
+    public KweetDTO(Kweet kweet) {
+        this.id = kweet.getID();
+        this.text = kweet.getText();
+        this.date = kweet.getDateTime();
+        this.placer = kweet.getPlacer();
     }
 
     public int getId() {
@@ -41,11 +42,11 @@ public class KweetDTO {
         this.date = date;
     }
 
-    public String getPlacer() {
+    public User getPlacer() {
         return placer;
     }
 
-    public void setPlacer(String placer) {
+    public void setPlacer(User placer) {
         this.placer = placer;
     }
 }

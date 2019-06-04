@@ -1,4 +1,4 @@
-package jsf.bean;
+package jsf;
 
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
@@ -38,7 +38,13 @@ public class Auth implements Serializable {
         HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
         try {
             request.login(username, password);
-            externalContext.redirect("http://localhost:8080/Kwetter_versie_5001_war_exploded/index.xhtml");
+            if (request.isUserInRole("Admin"))
+            {
+                externalContext.redirect("http://localhost:8080/Kwetter_versie_5001_war_exploded/admin/admin.xhtml");
+            }
+            else if(request.isUserInRole("Mod")) {
+                externalContext.redirect("http://localhost:8080/Kwetter_versie_5001_war_exploded/mod/mod.xhtml");
+            }
         } catch (ServletException e) {
             context.addMessage(null, new FacesMessage("Unknown login"));
         }
