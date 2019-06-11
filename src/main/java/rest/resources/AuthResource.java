@@ -22,7 +22,6 @@ public class AuthResource {
     @Inject
     UserService userService;
 
-
     @POST
     @Path("/login")
     @Produces({MediaType.APPLICATION_JSON})

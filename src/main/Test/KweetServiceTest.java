@@ -1,5 +1,4 @@
 import DAO.DAOKweetImpl;
-import DAO.DAOUserImpl;
 import Models.Kweet;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,8 +32,6 @@ public class KweetServiceTest {
         // Assert
         verify(kweetDAO, Mockito.times(1)).addKweet(kweet);
     }
-
-
 
     @Test
     public void shouldEditKweetService() throws Exception{

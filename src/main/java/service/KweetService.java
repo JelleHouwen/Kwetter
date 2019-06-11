@@ -16,8 +16,7 @@ public class KweetService {
     public KweetService(){
     }
     public void addKweet(Kweet k){
-        User kweetUser = userDAO.getUser(k.getPlacer().getUsername());
-        k.setPlacer(kweetUser);
+    System.out.println(k.getPlacer());
         kweetDAO.addKweet(k);
     }
     public void removeKweet(Kweet k) {

@@ -20,6 +20,7 @@ public class DAOTopic implements IDAOTopic {
         Query query = em.createNamedQuery("Topic.getTrendingTopics");
         Query q = em.createNativeQuery("SELECT t.*,count(t.title) total  from Topic t group by t.title order by total desc",Topic.class);
         query.setMaxResults(5);
+        q.setMaxResults(5);
         try {
             return (List<Topic>) q.getResultList();
         } catch (NoResultException ex) {

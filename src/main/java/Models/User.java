@@ -47,10 +47,23 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "placer", cascade = CascadeType.PERSIST)
     private List<Kweet> kweets;
 
+
     @JsonbTransient
     @ManyToMany(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
     private List<Role> roles;
 
+    public User(String username, String password, String profilePicture, String bio, String location, String website, List<User> followers, List<User> following, List<Kweet> kweets, List<Role> roles) {
+        this.username = username;
+        this.password = password;
+        this.profilePicture = profilePicture;
+        this.bio = bio;
+        this.location = location;
+        this.website = website;
+        this.followers = followers;
+        this.following = following;
+        this.kweets = kweets;
+        this.roles = roles;
+    }
 
     public User() {
         this.roles = new ArrayList<>();

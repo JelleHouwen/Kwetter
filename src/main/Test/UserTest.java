@@ -1,26 +1,26 @@
-import DAO.DAOUserImpl;
-import DAO.DAOUserMysql;
-import DAO.IDAOUser;
 import Models.Role;
 import Models.User;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.MockitoAnnotations;
-import service.UserService;
-
-import javax.inject.Inject;
-import java.sql.SQLException;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 public class UserTest {
 
     @Before
     public void setup(){
+    }
+    @Test
+    public void shouldAddARole(){
+        // Arrange
+        User user = new User("followee");
+        Role admin = new Role("Admin");
+
+        // Act
+        user.addRole(admin);
+
+        // Assert
+        assertEquals(1,user.getRoles().size());
     }
     @Test
     public void shouldAddAndRemoveARole(){

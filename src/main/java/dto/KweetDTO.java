@@ -1,29 +1,39 @@
 package dto;
 
 import Models.Kweet;
+import Models.Topic;
 import Models.User;
 
 import java.util.Date;
+import java.util.List;
 
 public class KweetDTO {
-    int id;
-    String text;
-    Date date;
-    User placer;
+
+     int ID;
+     String text;
+     Date dateTime;
+     List<User> likes;
+     List<User> mentions;
+     User placer;
+     List<Topic> topics;
+
 
     public KweetDTO(Kweet kweet) {
-        this.id = kweet.getID();
+        this.ID = kweet.getID();
         this.text = kweet.getText();
-        this.date = kweet.getDateTime();
+        this.dateTime = kweet.getDateTime();
+        this.likes = kweet.getLikes();
+        this.mentions = kweet.getMentions();
         this.placer = kweet.getPlacer();
+        this.topics = kweet.getTopics();
     }
 
-    public int getId() {
-        return id;
+    public int getID() {
+        return ID;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setID(int ID) {
+        this.ID = ID;
     }
 
     public String getText() {
@@ -34,12 +44,28 @@ public class KweetDTO {
         this.text = text;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getDateTime() {
+        return dateTime;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setDateTime(Date dateTime) {
+        this.dateTime = dateTime;
+    }
+
+    public List<User> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(List<User> likes) {
+        this.likes = likes;
+    }
+
+    public List<User> getMentions() {
+        return mentions;
+    }
+
+    public void setMentions(List<User> mentions) {
+        this.mentions = mentions;
     }
 
     public User getPlacer() {
@@ -48,5 +74,13 @@ public class KweetDTO {
 
     public void setPlacer(User placer) {
         this.placer = placer;
+    }
+
+    public List<Topic> getTopics() {
+        return topics;
+    }
+
+    public void setTopics(List<Topic> topics) {
+        this.topics = topics;
     }
 }

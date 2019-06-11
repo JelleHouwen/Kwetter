@@ -3,7 +3,7 @@ package rest.resources;
 import Models.Kweet;
 import Models.User;
 import dto.KweetDTO;
-import rest.KweetWs;
+import rest.KweetWebsocket;
 import service.KweetService;
 import service.UserService;
 
@@ -27,7 +27,7 @@ public class KweetResource {
     @Inject
     UserService userService;
     @Inject
-    KweetWs ws;
+    KweetWebsocket ws;
     @Context
     UriInfo uriInfo;
 
@@ -83,12 +83,13 @@ public class KweetResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response removeKweet(@Context HttpServletResponse response, @PathParam("id") int id) {
         Kweet removeKweet =kweetService.getKweetByID(id);
-        if(removeKweet!=null) {
+      try{
              kweetService.removeKweet(removeKweet);
             return Response.ok().entity("Kweet is removed").build();
         }
-        else return Response.status(Response.Status.BAD_REQUEST).entity("kweet is not removed").build();
-
+        catch(Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("kweet is not removed").build();
+        }
         }
 
     @GET
@@ -119,20 +120,34 @@ public class KweetResource {
     }
 
     @POST
-    @Path("add")
+    @Path("/add/{userName}&{text}")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    public Response insertKweet(Kweet kweet) {
-        System.out.println("ADDING KWEET");
-        System.out.println(kweet.getText());
-        System.out.println(kweet.getPlacer().getUsername());
+    public Response insertKweet(@PathParam("userName") String userName, @PathParam("text") String text) {
         try {
-
-            System.out.println(kweet.getPlacer().getUsername());
-            kweetService.addKweet(kweet);
+        System.out.println(userName);
+            Kweet k = new Kweet(text,userService.getUser(userName));
+            kweetService.addKweet(k);
             ws.sendMessages();
-            return Response.ok(kweet, MediaType.APPLICATION_JSON).build();
+            return Response.ok(k, MediaType.APPLICATION_JSON).build();
         } catch (Exception e) {
+
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+    }
+    @POST
+    @Path("/add")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response addKweet(Kweet k) {
+        try {
+            System.out.println(k.getMentions().size());
+            System.out.println(k.getPlacer());
+            kweetService.addKweet(k);
+              ws.sendMessages();
+            return Response.ok(k, MediaType.APPLICATION_JSON).build();
+        } catch (Exception e) {
+
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
