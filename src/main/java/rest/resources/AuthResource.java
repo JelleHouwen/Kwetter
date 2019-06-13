@@ -23,14 +23,14 @@ public class AuthResource {
     UserService userService;
 
     @POST
-    @Path("/login")
+    @Path("/login/{userName}&{password}")
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response login(User credentials) {
+    public Response login(@PathParam("userName") String userName, @PathParam("password") String password) {
         try {
-            boolean found = userService.validateUser(credentials.getUsername(), credentials.getPassword());
+            boolean found = userService.validateUser(userName,password);
             if (found) {
-                User user = userService.getUser(credentials.getUsername());
+                User user = userService.getUser(userName);
                 String token = JWTTokenGenerator.generateToken(user);
                 UserDTO userDTO = new UserDTO(user);
 

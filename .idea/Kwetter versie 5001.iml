@@ -140,5 +140,6 @@
     <orderEntry type="library" name="Maven: com.auth0:java-jwt:3.1.0" level="project" />
     <orderEntry type="library" name="Maven: org.bouncycastle:bcprov-jdk15on:1.55" level="project" />
     <orderEntry type="library" name="Maven: org.modelmapper:modelmapper:2.3.2" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="GlassFish 5.184.01 - WebSocket" level="application_server_libraries" />
   </component>
 </module>

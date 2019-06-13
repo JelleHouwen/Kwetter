@@ -128,7 +128,7 @@ public class KweetResource {
         System.out.println(userName);
             Kweet k = new Kweet(text,userService.getUser(userName));
             kweetService.addKweet(k);
-            ws.sendMessages();
+            ws.sendMessages(userService.getUser(userName));
             return Response.ok(k, MediaType.APPLICATION_JSON).build();
         } catch (Exception e) {
 
@@ -144,7 +144,7 @@ public class KweetResource {
             System.out.println(k.getMentions().size());
             System.out.println(k.getPlacer());
             kweetService.addKweet(k);
-              ws.sendMessages();
+              ws.sendMessages(k.getPlacer());
             return Response.ok(k, MediaType.APPLICATION_JSON).build();
         } catch (Exception e) {
 
